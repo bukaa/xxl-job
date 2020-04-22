@@ -24,6 +24,8 @@
 	    <result column="handle_msg" property="handleMsg" />
 
 		<result column="alarm_status" property="alarmStatus" />
+
+		<result column="job_desc" property="jobDesc" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
@@ -45,8 +47,9 @@
 	</sql>
 	
 	<select id="pageList" resultMap="XxlJobLog">
-		SELECT <include refid="Base_Column_List" />
+		SELECT <include refid="Base_Column_List" />, j.job_desc
 		FROM xxl_job_log AS t
+		left join xxl_job_info j on t.job_id=j.id
 		<trim prefix="WHERE" prefixOverrides="AND | OR" >
 			<if test="jobId==0 and jobGroup gt 0">
 				AND t.job_group = #{jobGroup}
